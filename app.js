@@ -1,9 +1,10 @@
 // Book Class: Represents a Book
 class Book {
-  constructor(title, author, pages) {
+  constructor(title, author, pages, isRead) {
     this.title = title;
     this.author = author;
     this.pages = pages;
+    this.isRead = isRead;
   }
 }
 
@@ -21,9 +22,10 @@ class UI {
     const row = document.createElement("tr");
 
     row.innerHTML = `
-      <td>${book.title}</td>
+      <td>${book.title}</td> </button>
       <td>${book.author}</td>
       <td>${book.pages}</td>
+      <td>${book.isRead}</td>
       <td><a href="#" class="btn btn-danger btn-sm delete">X</a></td>
     `;
 
@@ -52,6 +54,7 @@ class UI {
     document.querySelector("#title").value = "";
     document.querySelector("#author").value = "";
     document.querySelector("#pages").value = "";
+    document.querySelector("#isRead").value = "";
   }
 }
 
@@ -99,13 +102,14 @@ document.querySelector("#book-form").addEventListener("submit", (e) => {
   const title = document.querySelector("#title").value;
   const author = document.querySelector("#author").value;
   const pages = document.querySelector("#pages").value;
+  const isRead = document.querySelector("#isRead").value;
 
   // Validate
-  if (title === "" || author === "" || pages === "") {
+  if (title === "" || author === "" || pages === "" || isRead === "") {
     UI.showAlert("Please fill in all fields", "danger");
   } else {
     // Instatiate book
-    const book = new Book(title, author, pages);
+    const book = new Book(title, author, pages, isRead);
 
     // Add Book to UI
     UI.addBookToList(book);
@@ -127,7 +131,7 @@ document.querySelector("#book-list").addEventListener("click", (e) => {
   UI.deleteBook(e.target);
 
   // Remove book from store
-  Store.removeBook(e.target.parentElement.previousElementSibling.textContent);
+  Store.removeBook(e.target.parentElement.previousElementSibling.previousElementSibling.textContent);
 
   // Show success message
   UI.showAlert("Book Removed", "success");
